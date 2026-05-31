@@ -1,73 +1,84 @@
-# Nome do Jogo
+# street fighter x king of fighters
 
-Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvolvido com Python e Pygame.
+Projeto final da disciplina de Introdução a Algoritmos/Programação, desenvolvido em Python com Pygame.
 
-Este repositório é um template para os grupos da disciplina. A proposta é começar com uma base funcional e evoluir o jogo ao longo do semestre.
+Este repositório contém uma versão local de luta 2D para dois jogadores utilizando o mesmo teclado. O jogo apresenta dois lutadores controláveis, animações de movimento, salto, ataque leve e shoryuken, além de uma barra de vida para cada personagem.
 
 ## Integrantes do grupo
 
-- Nome do integrante 1
-- Nome do integrante 2
-- Nome do integrante 3
-- Nome do integrante 4
+- Enzo Fernandes Alcântara
+- miguel de freitas abood
 
 ## Estrutura do projeto
 
-- `main.py`: ponto de entrada da aplicação.
-- `src/`: código-fonte principal do jogo (loop, regras, sprites e dados).
-- `assets/`: imagens, fontes e sons.
-- `data/`: arquivos persistentes (recorde/ranking).
-- `tests/`: testes unitários com `pytest`.
-- `docs/`: documentação do projeto, incluindo proposta inicial.
+- `main.py`: ponto de entrada do jogo de luta.
+- `fighter.py`: classe `Fighter` que controla movimento, ataques, animações e colisões.
+- `src/`: módulos auxiliares do projeto.
+  - `src/config.py`: constantes do jogo (tela, cores, FPS e caminhos).
+  - `src/funcoes.py`: funções de lógica e utilitários.
+  - `src/sprites.py`: carregamento e recorte de sprites.
+  - `src/dados.py`: leitura e gravação de recorde.
+  - `src/jogo.py`: versão adicional de loop de jogo com personagem, gema e inimigo.
+- `assets/`: sprites, imagens de fundo, fontes e sons.
+- `data/`: arquivos persistentes, como `recorde.txt`.
+- `tests/`: testes unitários executáveis com `pytest`.
+- `docs/`: documentação e proposta do projeto.
 
 ## Descrição do jogo
 
-Descreva brevemente a ideia principal do jogo.
+O jogo é uma luta 2D para dois jogadores em modo local. Cada jogador controla um lutador inspirado no estilo Street Fighter e deve atacar o oponente para reduzir sua barra de vida.
 
-Exemplo:
-
-> O jogo consiste em controlar um personagem que deve coletar moedas e evitar obstáculos. O jogador ganha pontos ao coletar itens e perde vidas ao colidir com obstáculos. A partida termina quando o tempo acaba ou quando o jogador perde todas as vidas.
+Os personagens podem andar, pular, recuar e executar ataques leves. Também há um golpe especial do tipo "shoryuken" que aplica mais dano quando executado corretamente.
 
 ## Objetivo do jogador
 
-Explique o que o jogador precisa fazer para vencer ou avançar no jogo.
-
-Exemplo:
-
-> O objetivo é coletar a maior quantidade possível de itens antes que o tempo acabe, evitando colisões com os obstáculos.
+O objetivo é reduzir a vida do adversário a zero antes que o seu próprio lutador seja derrotado. O jogador que permanecer com vida vence a partida.
 
 ## Regras do jogo
 
-Liste as principais regras do jogo.
-
-Exemplo:
-
-- O jogador se movimenta usando as setas do teclado.
-- Cada item coletado aumenta a pontuação.
-- Colidir com um obstáculo reduz a quantidade de vidas.
-- A partida termina quando o jogador perde todas as vidas ou quando o tempo acaba.
+- Cada lutador começa com 1000 de vida.
+- Ataques bem-sucedidos reduzem 100 pontos de vida do adversário.
+- A partida termina quando a vida de um dos lutadores chega a zero.
+- O jogador deve manter o lutador dentro dos limites da tela.
+- O golpe especial é ativado pela sequência de direção seguida da tecla de ataque apropriada.
 
 ## Controles
 
-Informe as teclas ou comandos utilizados no jogo.
+### Jogador 1
 
-Exemplo:
+- `A`: andar para a esquerda
+- `D`: andar para a direita
+- `W`: pular
+- `U`: ataque leve 1
+- `I`: ataque leve 2
+- `J`: ataque leve 3
+- `K`: ataque leve 4
+- `U` + sequência de direção `D`, `S`, `D`/`S` ou `F`: shoryuken leve/especial
 
-- Seta para cima: mover para cima
-- Seta para baixo: mover para baixo
-- Seta para esquerda: mover para esquerda
-- Seta para direita: mover para direita
-- Espaço: realizar ação
-- ESC: sair do jogo
+### Jogador 2
+
+- `Seta esquerda`: andar para a esquerda
+- `Seta direita`: andar para a direita
+- `Seta para cima`: pular
+- `Tecla 4 do teclado numérico`: ataque leve 1
+- `Tecla 5 do teclado numérico`: ataque leve 2
+- `Tecla 1 do teclado numérico`: ataque leve 3
+- `Tecla 2 do teclado numérico`: ataque leve 4
+- `Tecla 4 do teclado numérico` + sequência de direção: shoryuken leve/especial
+
+> Observação: as teclas de ataque do segundo jogador usam o teclado numérico (`KP4`, `KP5`, `KP1`, `KP2`).
 
 ## Como executar o projeto
 
-### 1. Clonar o repositório
+### 1. Instalar dependências
 
 ```bash
-git clone LINK_DO_REPOSITORIO
-cd NOME_DA_PASTA
 pip install -r requirements.txt
+```
+
+### 2. Iniciar o jogo
+
+```bash
 python main.py
 ```
 
@@ -79,13 +90,13 @@ python -m pytest
 
 ## Checklist mínimo para entrega
 
-- Preencher este README com nome final, descrição real, regras e controles do jogo.
-- Atualizar `docs/proposta.MD` com a proposta do grupo.
-- Garantir que o jogo executa com `python main.py`.
-- Garantir que os testes passam com `pytest`.
+- [x] Preencher o README com nome final, descrição real, regras e controles do jogo.
+- [ ] Atualizar `docs/proposta.MD` com a proposta do grupo.
+- [x] Garantir que o jogo executa com `python main.py`.
+- [x] Garantir que os testes passam com `pytest`.
 
-## Observações para os alunos
+## Observações
 
-- Mantenham o código organizado em módulos pequenos e com responsabilidade clara.
-- Comentem partes importantes da lógica, principalmente regras do jogo.
-- Registrem decisões técnicas no README do grupo ao longo do desenvolvimento.
+- Mantenha o código modular e bem comentado.
+- Use `src/` para lógica adicional e mantenha o loop principal em `main.py`.
+- Documente decisões importantes no `docs/proposta.MD`.
