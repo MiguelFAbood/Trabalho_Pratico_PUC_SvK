@@ -29,9 +29,9 @@ O objetivo principal de cada jogador é derrotar o adversário reduzindo sua bar
 
 ## 6. Regras principais
 
-- Cada lutador começa com 1000 pontos de vida.
-- Ataques bem-sucedidos reduzem 100 pontos de vida do oponente.
-- A partida termina quando a saúde de um dos jogadores chega a zero.
+- Cada jogador escolhe um lutador.
+- Ambos tem uma barra de vida e uma barra de super.
+- Ambos os personagens tem ataques leves, pesados, especiais e supers.
 - O lutador deve permanecer dentro dos limites da tela.
 - Golpes especiais podem ser executados com a combinação de direção e ataque.
 
@@ -70,9 +70,8 @@ Cada jogador tem uma barra de vida inicial de 1000 pontos. A partida não utiliz
 - `W`: pular
 - `U`: ataque leve 1
 - `I`: ataque leve 2
-- `J`: ataque leve 3
-- `K`: ataque leve 4
-- `U` + sequência de direção: shoryuken especial
+- `J`: ataque pesado 1
+- `K`: ataque pesado 2
 
 ### Jogador 2
 
@@ -81,9 +80,8 @@ Cada jogador tem uma barra de vida inicial de 1000 pontos. A partida não utiliz
 - `Seta para cima`: pular
 - `Tecla 4 do teclado numérico`: ataque leve 1
 - `Tecla 5 do teclado numérico`: ataque leve 2
-- `Tecla 1 do teclado numérico`: ataque leve 3
-- `Tecla 2 do teclado numérico`: ataque leve 4
-- `KP4` + sequência de direção: shoryuken especial
+- `Tecla 1 do teclado numérico`: ataque pesado 1
+- `Tecla 2 do teclado numérico`: ataque pesado 2
 
 ## 11. Organização inicial do código
 
