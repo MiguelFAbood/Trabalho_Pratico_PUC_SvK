@@ -1,202 +1,101 @@
 # Proposta Inicial do Jogo
 
-Este documento deve ser preenchido pelo grupo na Semana 1 do projeto.
-
-A proposta deve apresentar uma ideia simples, clara e viável para ser desenvolvida com Python e Pygame dentro do prazo disponível.
+Este documento apresenta a proposta do jogo desenvolvido em Python e Pygame para a disciplina de Introdução a Algoritmos/Programação.
 
 ## 1. Nome provisório do jogo
 
-Escreva aqui o nome provisório do jogo.
-
-Exemplo:
-
-> Corrida dos Obstáculos
+> Street Fighter x King of Fighters
 
 ## 2. Integrantes do grupo
 
-Liste os integrantes do grupo.
-
-- Nome 1:
-- Nome 2:
-- Nome 3:
-- Nome 4:
+- Enzo Fernandes Alcântara
+- miguel de freitas abood
 
 ## 3. Tipo de jogo
 
-Indique o tipo de jogo que será desenvolvido.
-
-Exemplos:
-
-- jogo de desviar de obstáculos;
-- jogo de coleta de itens;
-- labirinto simples;
-- jogo de perguntas e respostas;
-- jogo de memória;
-- Pong;
-- Snake;
-- Breakout;
-- nave desviando de meteoros;
-- corrida simples com obstáculos;
-- jogo de clique rápido;
-- jogo de sobrevivência simples.
-
 Tipo escolhido pelo grupo:
 
-> Escreva aqui.
+> Jogo de luta 2D local para dois jogadores.
 
 ## 4. Descrição geral do jogo
 
-Explique, em poucas linhas, como o jogo funcionará.
+O jogo é uma luta 2D local para dois jogadores no mesmo teclado. Cada jogador controla um lutador que pode andar, pular e atacar o adversário até reduzir a vida do oponente a zero.
 
-Procure responder:
-
-- O que aparece na tela?
-- O que o jogador controla?
-- O que o jogador precisa fazer?
-- Quais desafios aparecem durante a partida?
-
-Descrição:
-
-> Escreva aqui.
+A tela exibe dois personagens em combate, barras de vida para cada um, e animações para movimento, salto e ataques.
 
 ## 5. Objetivo do jogador
 
-Explique qual é o objetivo principal do jogador.
-
-Exemplos:
-
-- coletar o maior número possível de itens;
-- sobreviver pelo maior tempo possível;
-- chegar até o final do labirinto;
-- acertar alvos;
-- responder perguntas corretamente;
-- evitar obstáculos;
-- quebrar todos os blocos.
-
-Objetivo:
-
-> Escreva aqui.
+O objetivo principal de cada jogador é derrotar o adversário reduzindo sua barra de vida a zero antes que a sua própria vida acabe.
 
 ## 6. Regras principais
 
-Liste as principais regras do jogo.
-
-Exemplo:
-
-- O jogador começa com 3 vidas.
-- Cada moeda coletada vale 10 pontos.
-- Cada colisão com obstáculo remove 1 vida.
-- A partida termina quando as vidas chegam a zero.
-- O jogador vence se alcançar 100 pontos.
-
-Regras do grupo:
-
-- Regra 1:
-- Regra 2:
-- Regra 3:
-- Regra 4:
-- Regra 5:
+- Cada lutador começa com 1000 pontos de vida.
+- Ataques bem-sucedidos reduzem 100 pontos de vida do oponente.
+- A partida termina quando a saúde de um dos jogadores chega a zero.
+- O lutador deve permanecer dentro dos limites da tela.
+- Golpes especiais podem ser executados com a combinação de direção e ataque.
 
 ## 7. Condição de vitória
 
-Explique como o jogador vence ou conclui o jogo.
-
-Exemplos:
-
-- atingir determinada pontuação;
-- chegar ao final da fase;
-- sobreviver até o tempo acabar;
-- responder uma quantidade mínima de perguntas;
-- quebrar todos os blocos.
-
-Condição de vitória:
-
-> Escreva aqui.
+O jogador vence quando o adversário fica com 0 pontos de vida. O confronto termina imediatamente quando uma das barras de vida se esgota.
 
 ## 8. Condição de derrota ou encerramento
 
-Explique como o jogador perde ou quando a partida termina.
-
-Exemplos:
-
-- perder todas as vidas;
-- acabar o tempo;
-- colidir com determinado obstáculo;
-- errar muitas perguntas;
-- deixar a bola cair, no caso de Breakout ou Pong.
-
-Condição de derrota ou encerramento:
-
-> Escreva aqui.
+A partida termina com derrota de um jogador quando sua vida chega a zero. Não há tempo limite na versão atual do jogo.
 
 ## 9. Elementos previstos no jogo
 
-Descreva os principais elementos que farão parte do jogo.
+### Jogador ou elemento principal
 
-## Jogador ou elemento principal
+Dois lutadores controláveis localmente pelo mesmo teclado. Cada lutador possui movimento horizontal, salto e ataques.
 
-Exemplo:
+### Obstáculos, inimigos ou desafios
 
-> Um personagem controlado pelas setas do teclado.
+O desafio principal é o próprio adversário, que tenta atacar e reduzir a vida do jogador. O jogador deve usar deslocamento, salto e ataques estratégicos para evitar ser atingido.
 
-Descrição:
+### Itens, alvos ou objetos de interação
 
-> Escreva aqui.
+Não há itens coletáveis nesta proposta. A interação principal é o combate entre os dois lutadores.
 
-## Obstáculos, inimigos ou desafios
+### Pontuação, vidas, tempo ou progresso
 
-Exemplo:
-
-> Obstáculos aparecem em posições aleatórias e devem ser evitados.
-
-Descrição:
-
-> Escreva aqui.
-
-## Itens, alvos ou objetos de interação
-
-Exemplo:
-
-> Moedas aparecem na tela e aumentam a pontuação quando coletadas.
-
-Descrição:
-
-> Escreva aqui.
-
-## Pontuação, vidas, tempo ou progresso
-
-Exemplo:
-
-> O jogador começa com 3 vidas e ganha 10 pontos por item coletado.
-
-Descrição:
-
-> Escreva aqui.
+Cada jogador tem uma barra de vida inicial de 1000 pontos. A partida não utiliza tempo; o progresso é determinado pela redução da vida do adversário.
 
 ## 10. Controles previstos
 
-Informe os comandos que serão utilizados pelo jogador.
+### Jogador 1
 
-Exemplo:
+- `A`: andar para a esquerda
+- `D`: andar para a direita
+- `W`: pular
+- `U`: ataque leve 1
+- `I`: ataque leve 2
+- `J`: ataque leve 3
+- `K`: ataque leve 4
+- `U` + sequência de direção: shoryuken especial
 
-- Seta para cima: mover para cima
-- Seta para baixo: mover para baixo
-- Seta para esquerda: mover para esquerda
-- Seta para direita: mover para direita
-- Espaço: realizar ação
-- ESC: sair do jogo
+### Jogador 2
 
-Controles do grupo:
-
-- Tecla/comando:
-- Tecla/comando:
-- Tecla/comando:
+- `Seta esquerda`: andar para a esquerda
+- `Seta direita`: andar para a direita
+- `Seta para cima`: pular
+- `Tecla 4 do teclado numérico`: ataque leve 1
+- `Tecla 5 do teclado numérico`: ataque leve 2
+- `Tecla 1 do teclado numérico`: ataque leve 3
+- `Tecla 2 do teclado numérico`: ataque leve 4
+- `KP4` + sequência de direção: shoryuken especial
 
 ## 11. Organização inicial do código
 
-Explique como o grupo pretende organizar o código.
+O projeto será organizado em módulos para manter a lógica separada da interface e dos dados:
 
-Exemplo:
+- `main.py`: ponto de entrada e loop principal do jogo.
+- `fighter.py`: classe do lutador, entradas, animações e ataques.
+- `src/config.py`: constantes de configuração do jogo.
+- `src/funcoes.py`: funções auxiliares para lógica de pontuação, colisões e limites.
+- `src/sprites.py`: carregamento de sprites e imagens.
+- `src/dados.py`: leitura e gravação de recorde.
+- `tests/`: testes unitários para validar funções básicas.
 
 - `main.py`: inicia o jogo;
 - `src/jogo.py`: contém o loop principal;
@@ -206,8 +105,7 @@ Exemplo:
 
 Organização planejada:
 
-> Escreva aqui.
-
+> O código será mantido em módulos claros para separar responsabilidades. `main.py` inicia o jogo, `fighter.py` controla a lógica de cada personagem, `src/config.py` guarda constantes, `src/funcoes.py` cuida de lógica de colisão e pontuação, `src/sprites.py` carrega imagens e `src/dados.py` gerencia persistência de recorde.
 
 ## 12. Recursos externos previstos
 
@@ -222,11 +120,9 @@ Exemplo:
 
 Recursos previstos:
 
-> Escreva aqui.
-
-Caso não pretenda utilizar recursos externos, escreva:
-
-> Não pretendemos utilizar recursos externos.
+- Imagens e sprites vindos do diretório `assets/`, que podem ser referências de jogos existentes.
+- Tutorial e exemplos de Pygame para orientar a organização do código e o uso de eventos/colisões.
+- Sem uso de bibliotecas externas além de `pygame` e `pytest`.
 
 ## 13. Principais dificuldades esperadas
 
@@ -245,9 +141,9 @@ Exemplos:
 
 Dificuldades previstas:
 
-- Dificuldade 1:
-- Dificuldade 2:
-- Dificuldade 3:
+- Ajustar a lógica de controle de dois jogadores no mesmo teclado sem conflito de teclas.
+- Garantir que as colisões e os ataques sejam detectados corretamente.
+- Manter a organização do código com módulos separados e claros.
 
 ## 14. Escopo mínimo para a entrega final
 
@@ -261,7 +157,7 @@ Exemplo:
 
 Escopo mínimo:
 
-> Escreva aqui.
+> A versão mínima terá dois lutadores controláveis localmente, movimento básico, salto, ataques leves, detecção de colisão entre personagens, barras de vida funcionais e fim de partida quando um dos jogadores perder toda a vida.
 
 ## 15. Possíveis melhorias, caso haja tempo
 
@@ -281,6 +177,6 @@ Exemplos:
 
 Melhorias possíveis:
 
-- Melhoria 1:
-- Melhoria 2:
-- Melhoria 3:
+- Adicionar tela inicial e tela de vitória/derrota.
+- Incluir sons para ataques, impactos e ambiente.
+- Criar um segundo personagem com sprites diferentes ou outros golpes.

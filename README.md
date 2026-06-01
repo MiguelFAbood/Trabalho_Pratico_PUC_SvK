@@ -91,7 +91,7 @@ python -m pytest
 ## Checklist mínimo para entrega
 
 - [x] Preencher o README com nome final, descrição real, regras e controles do jogo.
-- [ ] Atualizar `docs/proposta.MD` com a proposta do grupo.
+- [x] Atualizar `docs/proposta.MD` com a proposta do grupo.
 - [x] Garantir que o jogo executa com `python main.py`.
 - [x] Garantir que os testes passam com `pytest`.
 
