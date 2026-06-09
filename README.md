@@ -7,7 +7,8 @@ Este repositório contém uma versão local de luta 2D para dois jogadores utili
 ## Integrantes do grupo
 
 - Enzo Fernandes Alcântara
-- miguel de freitas abood
+- Miguel de Freitas Abood
+- Roberto Kill
 
 ## Estrutura do projeto
 
