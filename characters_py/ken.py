@@ -230,7 +230,7 @@ KEN = {
                 {"damage": 60, "hitstun": 450,   "causes_knockdown": False,
                  "juggle_add": 0,  "eligible_if": "grounded"},
                 {"damage": 60, "hitstun": 1,   "causes_knockdown": True,
-                 "launch_velocity": (20, -20),  "juggle_add": 100, "eligible_if": "any"},
+                 "launch_velocity": (10, -20),  "juggle_add": 100, "eligible_if": "any"},
             ],
         },
         # ── Hadouken ─────────────────────────────────────────────

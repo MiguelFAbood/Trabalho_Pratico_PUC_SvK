@@ -1,10 +1,10 @@
-from motions import QCF, QCB, DP, RDP, SQCF, SQCBHCF  
+from motions import HCB, QCF, QCB, DP, RDP, SQCF, SQCBHCF  
 
 KYO = {
     "folder": "kof/kyo",
 
     "health": 1050,
-    "speed": 7,
+    "speed": 5,
     "jump_vel": -35,
     "dash_speed": 17,
     "backdash_speed": 10,
@@ -51,14 +51,15 @@ KYO = {
         # --- COMMAND NORMALS (Varies per character) ---
         40: "down_forward_heavy_kick",
         41: "jumping_down_heavy_punch",
+        42: "back_heavy_kick",
         
         # --- SPECIALS & SUPERS ---
         50: "aragami", #light rekka
         51: "dokugami", #heavy rekka
-        52: "oniyaki", #light
-        53: "oniyaki", #heavy
-        54: "oboro_guruma", #light
-        55: "oboro_guruma", #heavy
+        52: "oniyaki", #light dp
+        53: "oniyaki", #heavy dp
+        54: "oboro_guruma", #light jump kick
+        55: "oboro_guruma", #heavy jump kick
         56: "kai", #light
         57: "kai", #heavy
         58: "kototsuki_you",
@@ -70,7 +71,8 @@ KYO = {
         85: "aragami_followup_2_P", # any punch after aragami followup 1
         86: "aragami_overhead_followup", # any punch after aragami followup 2 OH, OTG
         87: "dokugami_followup_1", #any punch after dokugami
-        88: "dokugami_followup_2"  #any punch after dokugami 
+        88: "dokugami_followup_2", #any punch after dokugami
+        89: "kai_followup" #K after kai
 
     },
 
@@ -78,21 +80,21 @@ KYO = {
     51: "shoryuken/VFX",
     
     },
-    "projectile_folder": "hadouken/projectile",
-    "projectile_hit_folder": "hadouken/projectile_hit",
+    "projectile_folder": None,
+    "projectile_hit_folder": None,
 
     "specials": [
         # ==========================================
         # 1. SUPERS
         # ==========================================
         {
-            "motion": SQCF, "button": "heavy_punch",
-            "action_id": 80, "type": "shinryuken",
+            "motion": SQCBHCF, "button": "heavy_punch",
+            "action_id": 81, "type": "orochinagi",
             "is_super": True, "can_cancel": False,
         },
         {
-            "motion": SQCF, "button": "heavy_kick",
-            "action_id": 81, "type": "shippu",
+            "motion": SQCF, "button": "heavy_punch",
+            "action_id": 80, "type": "showdown",
             "is_super": True, "can_cancel": False,
         },
         # ==========================================
@@ -100,59 +102,78 @@ KYO = {
         # ==========================================
         {
             "motion": DP, "button": "light_punch",
-            "action_id": 50, "type": "dp",
+            "action_id": 52, "type": "dp",
             "light": True, "can_cancel": True,
         },
         {
             "motion": DP, "button": "heavy_punch",
-            "action_id": 51, "type": "dp",
+            "action_id": 53, "type": "dp",
             "light": False, "can_cancel": True,
         },
         {
             "motion": DP, "button": "light_kick",
-            "action_id": 55, "type": "ryusen",
+            "action_id": 54, "type": "ryusen",
             "light": True, "can_cancel": True,
         },
         {
             "motion": DP, "button": "heavy_kick",
-            "action_id": 56, "type": "ryusen",
+            "action_id": 55, "type": "ryusen",
             "light": False, "can_cancel": True,
         },
-
+                {
+            "motion": DP, "button": "light_kick",
+            "action_id": 54, "type": "tatsu",
+            "light": True, "can_cancel": True,
+        },
+        {
+            "motion": DP, "button": "heavy_kick",
+            "action_id": 55, "type": "tatsu",
+            "light": False, "can_cancel": True,
+        },
         # ==========================================
         # 3. QCFs and QCBs
         # ==========================================
         {
             "motion": QCF, "button": "light_punch",
-            "action_id": 54, "type": "projectile",
+            "action_id": 50, "type": "rekka",
             "light": True, "can_cancel": True,
         },
         {
             "motion": QCF, "button": "heavy_punch",
-            "action_id": 54, "type": "projectile",
+            "action_id": 51, "type": "rekka",
             "light": False, "can_cancel": True,
         },
         {
-            "motion": QCB, "button": "light_kick",
-            "action_id": 52, "type": "tatsu",
+            "motion": QCF, "button": "light_kick",
+            "action_id": 56, "type": "rekka",
             "light": True, "can_cancel": True,
         },
         {
-            "motion": QCB, "button": "heavy_kick",
-            "action_id": 53, "type": "tatsu",
+            "motion": QCF, "button": "heavy_kick",
+            "action_id": 57, "type": "rekka",
             "light": False, "can_cancel": True,
+        },
+        {
+        "motion": HCB, "button": "light_kick",
+        "action_id": 58, "type": "hitgrab",
+        "light": False, "can_cancel": True,
+        },
+                {
+        "motion": HCB, "button": "heavy_kick",
+        "action_id": 58, "type": "hitgrab",
+        "light": False, "can_cancel": True,
         },
     ],
 
     "projectile_data": {
-        "light_speed": 10,
-        "heavy_speed": 14,
-        "damage": 60,
-        "hitstun": 300,
-        "hitbox": (-140, 80, 50, 50),
-        "visual_x_offset": -60,
+        "light_speed": 0,
+        "heavy_speed": 0,
+        "damage": 0,
+        "hitstun": 0,
+        "hitbox": (0, 0, 0, 0),
+        "visual_x_offset": 0,
         "property": "mid",
-        "super_cancel": (5, 8)
+        "super_cancel": (1, 2)
     },
 
     "attack_data": {
@@ -174,22 +195,44 @@ KYO = {
             "property": "mid",
             "frame_cooldowns": { 3: 300 } 
         },
-        # ── Shoryuken light ─────────────────────────────────────
+        # ── Rekka 0 light ─────────────────────────────────────
         50: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 100,
+            "dash_vel_x": 5,
+            "hits": [
+                {"damage": 50, "hitstun": 300, "causes_knockdown": False,
+                 "launch_velocity": (1, -5), "juggle_add": 20, "eligible_if": "any"},
+            ],
+        },
+        # ── Rekka 0 heavy ─────────────────────────────────────
+        51: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 130,
+            "dash_vel_x": 7,
+            "hits": [
+                {"damage": 60, "hitstun": 350, "causes_knockdown": False,
+                 "launch_velocity": (1, -5), "juggle_add": 20, "eligible_if": "any"},
+            ],
+        },
+        # ── DP light ─────────────────────────────────────
+        52: {
             "property": "mid",
             "max_hits": 1,
             "hold_last_frame": True,
             "leap_on_frame": 2, "leap_vel_y": -25, "leap_vel_x": 5,
             "juggle_potential": 0,
             "hits": [
-                {"damage": 80, "hitstun": 300, "causes_knockdown": True,
+                {"damage": 60, "hitstun": 300, "causes_knockdown": True,
                  "launch_velocity": (3, -26), "juggle_add": 60, "eligible_if": "any"},
             ],
         },
-        # ── Shoryuken heavy ─────────────────────────────────────
-        51: {
+        # ── DP heavy ─────────────────────────────────────
+        53: {
             "property": "mid",
-            "max_hits": 3,
+            "max_hits": 2,
             "hit_cooldown": 40,
             "hold_last_frame": True,
             "leap_on_frame": 3, "leap_vel_y": -35, "leap_vel_x": 10,
@@ -197,42 +240,49 @@ KYO = {
             "super_cancel": (2, 3),
             "leap_cancel_safe": True,
             "hits": [
-                {"damage": 40, "hitstun": 350, "causes_knockdown": True,
+                {"damage": 70, "hitstun": 350, "causes_knockdown": True,
                  "launch_velocity": (1, -36), "juggle_add": 0, "eligible_if": "any"},
-                {"damage": 40, "hitstun": 0,   "causes_knockdown": False,
+                {"damage": 70, "hitstun": 0,   "causes_knockdown": False,
                  "launch_velocity": (0, -30),  "juggle_add": 30, "eligible_if": "airborne"},
-                {"damage": 80, "hitstun": 0,   "causes_knockdown": True,
-                 "launch_velocity": (6, -28),  "juggle_add": 30, "eligible_if": "airborne"},
             ],
         },
-        # ── Tatsumaki light ─────────────────────────────────────
-        52: {
+        # ── Oboro Guruma light ────────────────────────────────────
+        54: {
+            "property": "mid",
+            "max_hits": 2,
+            "hit_cooldown": 40,
+            "hold_last_frame": True,
+            "leap_on_frame": 3, "leap_vel_y": -15, "leap_vel_x": 10,
+            "juggle_potential": 200,
+            "leap_cancel_safe": True,
+            "hits": [
+                {"damage": 100, "hitstun": 0, "causes_knockdown": True,
+                 "launch_velocity": (8, -15), "juggle_add": 100, "eligible_if": "any"},
+            ],
+        },
+        # ── Oboro Guruma heavy ────────────────────────────────────
+        55: {
+            "property": "mid",
+            "max_hits": 2,
+            "hit_cooldown": 40,
+            "hold_last_frame": True,
+            "leap_on_frame": 3, "leap_vel_y": -38, "leap_vel_x": 10,
+            "juggle_potential": 100,
+            "leap_cancel_safe": True,
+            "hits": [
+                {"damage": 100, "hitstun": 0, "causes_knockdown": True,
+                 "launch_velocity": (8, -38), "juggle_add": 40, "eligible_if": "any"},
+                {"damage": 50, "hitstun": 0, "causes_knockdown": True,
+                 "launch_velocity": (8, -15), "juggle_add": 40, "eligible_if": "any"},
+            ],
+        },
+        # ── Hitgrab ──────────────────────────────────
+        58: {
             "property": "mid",
             "no_pushback": True,
             "max_hits": 2,
-            "hit_cooldown": 40,
-            "hold_last_frame": False,
-            "dash_vel_x": 6,
-            "loop_range": (5, 10),
-            "loop_times": 2,
-            "juggle_potential": 100,
-            "hits": [
-                {"damage": 20, "hitstun": 450, "causes_knockdown": False,
-                 "juggle_add": 0,  "eligible_if": "grounded"},
-                {"damage": 60, "hitstun": 1,   "causes_knockdown": True,
-                 "launch_velocity": (3, -35),  "juggle_add": 0, "eligible_if": "any"},
-            ],
-        },
-        # ── Tatsumaki heavy ─────────────────────────────────────
-        53: {
-            "property": "mid",
-            "no_pushback": True,
-            "max_hits": 3,
-            "hit_cooldown": 60,
             "hold_last_frame": False,
             "dash_vel_x": 8,
-            "loop_range": (5, 10),
-            "loop_times": 3,
             "juggle_potential": 100,
             "hits": [
                 {"damage": 20, "hitstun": 450, "causes_knockdown": False,
@@ -240,38 +290,7 @@ KYO = {
                 {"damage": 60, "hitstun": 450,   "causes_knockdown": False,
                  "juggle_add": 0,  "eligible_if": "grounded"},
                 {"damage": 60, "hitstun": 1,   "causes_knockdown": True,
-                 "launch_velocity": (20, -20),  "juggle_add": 100, "eligible_if": "any"},
-            ],
-        },
-        # ── Hadouken ─────────────────────────────────────────────
-        54:{
-            "whiff_cancel_super": True,
-            "super_cancel": (1, 12)
-        },
-        # ── Ryusenkyaku Light ────────────────────────────────────
-        55: {
-            "property": "mid",
-            "projectile_invul": True,
-            "max_hits": 1,
-            "hold_last_frame": True,
-            "leap_on_frame": 1, "leap_vel_y": -20, "leap_vel_x": 10,
-            "juggle_potential": 150,
-            "hits": [
-                {"damage": 100, "hitstun": 0, "causes_knockdown": True,
-                 "launch_velocity": (8, -15), "juggle_add": 100, "eligible_if": "any"},
-            ],
-        },
-        # ── Ryusenkyaku Heavy ────────────────────────────────────
-        56: {
-            "property": "mid",
-            "projectile_invul": True,
-            "max_hits": 1,
-            "hold_last_frame": True,
-            "leap_on_frame": 1, "leap_vel_y": -20, "leap_vel_x": 18,
-            "juggle_potential": 150,
-            "hits": [
-                {"damage": 100, "hitstun": 0, "causes_knockdown": True,
-                 "launch_velocity": (8, -15), "juggle_add": 100, "eligible_if": "any"},
+                 "launch_velocity": (10, -20),  "juggle_add": 100, "eligible_if": "any"},
             ],
         },
         # ── Shoryureppa (super) ──────────────────────────────────
@@ -764,8 +783,8 @@ KYO = {
         }
     },
     
-    "projectile_crop": (610, 612, 200,  300),
-    "projectile_hit_crop": (610, 612, 200,  300), 
+    "projectile_crop": None,
+    "projectile_hit_crop": None, 
 
     "throw_data": {
         34: {"damage": 130, "causes_knockdown": True}, # Forward Throw

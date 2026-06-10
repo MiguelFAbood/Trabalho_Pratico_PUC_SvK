@@ -1,6 +1,7 @@
 import pygame
 from fighter import Fighter
 from characters_py.ken import KEN
+from characters_py.kyo import KYO
 
 pygame.init()
 
@@ -55,7 +56,7 @@ def draw_super_meter(meter, x, y, is_full):
 
 
 def reset_fighters():
-    f1 = Fighter(1, KEN, 200, 310)
+    f1 = Fighter(1, KYO, 200, 310)
     f2 = Fighter(2, KEN, 900, 310)
     return f1, f2
 

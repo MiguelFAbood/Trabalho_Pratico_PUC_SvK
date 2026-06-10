@@ -289,7 +289,7 @@ class Fighter():
         elif move_type == "lariat":
             pass
 
-        elif move_type == "tatsu":
+        elif "dash_vel_x" in self.attack_data.get(special["action_id"], {}):
             raw_vx = self.attack_data.get(special["action_id"], {}).get("dash_vel_x", 10)
             self.vel_x = raw_vx if self.flip else -raw_vx
     
