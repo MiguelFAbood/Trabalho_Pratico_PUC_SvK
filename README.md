@@ -38,7 +38,7 @@ O objetivo é reduzir a vida do adversário a zero antes que o seu próprio luta
 ## Regras do jogo
 
 - Cada lutador começa com 1000 de vida.
-- Ataques bem-sucedidos reduzem 100 pontos de vida do adversário.
+- Ataques bem-sucedidos reduzem pontos de vida do adversário.
 - A partida termina quando a vida de um dos lutadores chega a zero.
 - O jogador deve manter o lutador dentro dos limites da tela.
 - O golpe especial é ativado pela sequência de direção seguida da tecla de ataque apropriada.
