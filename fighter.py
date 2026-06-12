@@ -50,6 +50,7 @@ class Fighter():
         self.SPEED        = char_data["speed"]
         self.jump_vel     = char_data["jump_vel"]
         self.special_list = char_data.get("specials", [])
+        self.rekka_data   = char_data.get("rekka_data", {})
         self.attack_data  = char_data.get("attack_data", {})
         self.hitbox_data  = char_data.get("hitbox_data", {})
         self.hurtbox_data   = char_data.get("hurtbox_data", {})
@@ -292,7 +293,68 @@ class Fighter():
         elif "dash_vel_x" in self.attack_data.get(special["action_id"], {}):
             raw_vx = self.attack_data.get(special["action_id"], {}).get("dash_vel_x", 10)
             self.vel_x = raw_vx if self.flip else -raw_vx
-    
+
+    def try_rekka_followup(self, key, pressed_override=None):
+        """
+        Checks if the character is currently in a 'rekka' stage (an action_id
+        present in self.rekka_data) and whether the player has pressed a button
+        (and optionally entered a motion) that matches one of the defined
+        followups for that stage, within the allowed input window.
+        """
+        stage = self.rekka_data.get(self.action)
+        if not stage:
+            return False
+
+        window = stage.get("window")
+        if window and not (window[0] <= self.frame_index <= window[1]):
+            return False
+
+        if stage.get("requires_hit", False) and not self.attack_hit:
+            return False
+
+        for option in stage.get("followups", []):
+            # Optional motion requirement (e.g. HCF for an alternate branch)
+            motion = option.get("motion")
+            if motion and not self.check_sequence(motion):
+                continue
+
+            buttons = option.get("buttons", [])
+            pressed = False
+            for b in buttons:
+                if pressed_override is not None:
+                    if pressed_override.get(b, False):
+                        pressed = True
+                        break
+                else:
+                    if key[self.controls[b]] and not self.prev_key[self.controls[b]]:
+                        pressed = True
+                        break
+
+            if pressed:
+                self.execute_rekka_followup(option["action_id"])
+                return True
+
+        return False
+
+    def execute_rekka_followup(self, action_id):
+        self.dashing       = False
+        self.attacking     = True
+        self.attack_hit    = False
+        self.attack_routed = True
+        self.update_action(action_id)
+        self.frame_index   = 0
+        self.update_time   = pygame.time.get_ticks()
+        self.vel_x = 0
+
+        self.special_hit_count   = 0
+        self.special_hit_cooldown = 0
+        self.special_leapt        = False
+        self.loop_count           = 0
+
+        dash_vx = self.attack_data.get(action_id, {}).get("dash_vel_x")
+        if dash_vx is not None:
+            self.vel_x = dash_vx if self.flip else -dash_vx
+
     def check_block(self, attack_property):
         if self.jump or self.knocked_down:
             return False
@@ -505,6 +567,17 @@ class Fighter():
             can_cancel_special = False
             can_cancel_normal  = False
             can_cancel_super = False
+            can_cancel_rekka = False
+
+            if self.action in self.rekka_data:
+                rekka_window = self.rekka_data[self.action].get("window")
+                rekka_requires_hit = self.rekka_data[self.action].get("requires_hit", False)
+
+                window_ok = (rekka_window is None) or (rekka_window[0] <= self.frame_index <= rekka_window[1])
+                hit_ok = (not rekka_requires_hit) or self.attack_hit
+
+                if window_ok and hit_ok:
+                    can_cancel_rekka = True
 
             if self.attacking:
                 current_attack_data = self.attack_data.get(self.action, {})
@@ -553,6 +626,7 @@ class Fighter():
                 or can_cancel_special
                 or can_cancel_normal
                 or can_cancel_super
+                or can_cancel_rekka
             )
 
             lp_pressed = key[self.controls["lp"]] and not self.prev_key[self.controls["lp"]]
@@ -573,6 +647,7 @@ class Fighter():
                         "can_cancel_special": can_cancel_special,
                         "can_cancel_normal":  can_cancel_normal,
                         "can_cancel_super":   can_cancel_super, 
+                        "can_cancel_rekka":   can_cancel_rekka,
                     }
             else:
                 if self.pending_input is not None:
@@ -581,6 +656,7 @@ class Fighter():
                     replay_can_cancel_special = pi["can_cancel_special"]
                     replay_can_cancel_normal  = pi["can_cancel_normal"]
                     replay_can_cancel_super   = pi.get("can_cancel_super", False)
+                    replay_can_cancel_rekka   = pi.get("can_cancel_rekka", False)
                     
                     replay_can_input = (
                         (not self.attacking)
@@ -588,15 +664,23 @@ class Fighter():
                         or replay_can_cancel_special
                         or replay_can_cancel_normal
                         or replay_can_cancel_super 
+                        or replay_can_cancel_rekka
                     )
                     
                     if replay_can_input:
-                        special_fired = self.try_specials(
-                            key, replay_can_cancel_special, can_fire, replay_can_cancel_super, target,
+                        rekka_fired = self.try_rekka_followup(
+                            key,
                             pressed_override={"lp": pi["lp"], "hp": pi["hp"], "lk": pi["lk"], "hk": pi["hk"]}
                         )
+
+                        special_fired = False
+                        if not rekka_fired:
+                            special_fired = self.try_specials(
+                                key, replay_can_cancel_special, can_fire, replay_can_cancel_super, target,
+                                pressed_override={"lp": pi["lp"], "hp": pi["hp"], "lk": pi["lk"], "hk": pi["hk"]}
+                            )
                         
-                        if not special_fired and (not self.attacking or replay_can_cancel_normal):
+                        if not rekka_fired and not special_fired and (not self.attacking or replay_can_cancel_normal):
                             self.attack()
                             self.attack_dir = pi["dir"]
                             if pi["lp"]: self.attack_type = 1
@@ -605,9 +689,13 @@ class Fighter():
                             if pi["hk"]: self.attack_type = 4
 
                 elif can_input and (any_attack or throw_pressed):
-                    special_fired = self.try_specials(key, can_cancel_special, can_fire, can_cancel_super, target)
+                    rekka_fired = self.try_rekka_followup(key)
+
+                    special_fired = False
+                    if not rekka_fired:
+                        special_fired = self.try_specials(key, can_cancel_special, can_fire, can_cancel_super, target)
                     
-                    if not special_fired and (not self.attacking or can_cancel_normal):
+                    if not rekka_fired and not special_fired and (not self.attacking or can_cancel_normal):
                         self.attack()
 
                         if throw_pressed:
@@ -870,7 +958,7 @@ class Fighter():
 
         current_attack = self.attack_data.get(self.action, {})
 
-        if self.action in list(range(10, 22)) + [6, 7, 40, 41, 50, 51, 52, 53, 54, 55, 56, 80, 81, 30, 31, 32, 33]:
+        if self.action in list(range(10, 22)) + [6, 7, 40, 41, 50, 51, 52, 53, 54, 55, 56, 80, 81, 30, 31, 32, 33] + list(range(82, 90)):
             animation_cooldown = 40
         elif self.action == 5:
             animation_cooldown = 60
@@ -1147,7 +1235,7 @@ class Fighter():
                 
             else:
                 self.frame_index = 0
-                if self.action in list(range(10, 22)) + [32, 33, 34, 35, 40, 41] + list(range(50, 57)) + [80, 81]:
+                if self.action in list(range(10, 22)) + [32, 33, 34, 35, 40, 41] + list(range(50, 57)) + [80, 81] + list(range(82, 90)):
                     self.attacking = False
                     self.attack_routed = False
                     self.vel_x = 0

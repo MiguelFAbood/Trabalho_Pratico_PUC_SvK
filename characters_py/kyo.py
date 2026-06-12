@@ -1,10 +1,10 @@
-from motions import HCB, QCF, QCB, DP, RDP, SQCF, SQCBHCF  
+from motions import HCB, QCF, QCB, DP, RDP, SQCF, SQCBHCF, HCF
 
 KYO = {
     "folder": "kof/kyo",
 
     "health": 1050,
-    "speed": 5,
+    "speed": 7,
     "jump_vel": -35,
     "dash_speed": 17,
     "backdash_speed": 10,
@@ -164,6 +164,83 @@ KYO = {
         "light": False, "can_cancel": True,
         },
     ],
+
+    # ==============================================================
+    # REKKA CHAINS
+    # --------------------------------------------------------------
+    # Each key is the action_id of a move that can be "rekka cancelled"
+    # into a followup. "window" is the inclusive (start, end) range of
+    # self.frame_index during which the followup input is accepted.
+    # "followups" is checked top-to-bottom, first match wins:
+    #   - "buttons": list of button names, any of which trigger this option
+    #   - "motion":  optional input sequence (e.g. HCF) that must ALSO be
+    #                 in the input buffer for this option to be chosen
+    #   - "action_id": the action this transitions into
+    #
+    # NOTE: the "window" frame ranges below are placeholders, tune them
+    # once you have real animations/hitbox data for actions 82-89.
+    # ==============================================================
+    "rekka_data": {
+        # ── 214 LP (Aragami) -> any button -> Aragami Followup 1 ──
+        50: {
+            "window": (3, 7),
+            "followups": [
+                {"buttons": ["lp", "hp", "lk", "hk"], "action_id": 82},
+            ],
+        },
+
+        # ── Aragami Followup 1 -> branches ──
+        82: {
+            "window": (3, 7),
+            "followups": [
+                # HCF + Punch  -> overhead followup (must be checked first,
+                # since plain punch is also a valid option below)
+                {"motion": HCF, "buttons": ["lp", "hp"], "action_id": 83},
+                # Any Kick -> followup 2 (kick variant)
+                {"buttons": ["lk", "hk"], "action_id": 84},
+                # Any Punch (no HCF) -> followup 2 (punch variant)
+                {"buttons": ["lp", "hp"], "action_id": 85},
+            ],
+        },
+
+        # ── Aragami Followup 2 (Overhead) -> Punch -> OTG followup ──
+        83: {
+            "window": (3, 7),
+            "followups": [
+                {"buttons": ["lp", "hp"], "action_id": 86},
+            ],
+        },
+
+        # ── 214 HP (Dokugami) -> Punch -> Dokugami Followup 1 ──
+        51: {
+            "window": (3, 7),
+            "followups": [
+                {"buttons": ["lp", "hp"], "action_id": 87},
+            ],
+        },
+
+        # ── Dokugami Followup 1 -> Punch -> Dokugami Followup 2 ──
+        87: {
+            "window": (3, 7),
+            "followups": [
+                {"buttons": ["lp", "hp"], "action_id": 88},
+            ],
+        },
+
+        # ── QCF + LK/HK rekka -> any Kick -> Kai Followup ──
+        56: {
+            "window": (3, 6),
+            "followups": [
+                {"buttons": ["lk", "hk"], "action_id": 89},
+            ],
+        },
+        57: {
+            "window": (3, 6),
+            "followups": [
+                {"buttons": ["lk", "hk"], "action_id": 89},
+            ],
+        },
+    },
 
     "projectile_data": {
         "light_speed": 0,
@@ -349,6 +426,91 @@ KYO = {
                 "launch_velocity": (8, -30), "juggle_add": 100, "eligible_if": "any"},
             ],
         },
+
+        # ──────────────────────────────────────────────────────────
+        # REKKA FOLLOWUPS - placeholder values, tune once you have
+        # real animations/hitbox data for these.
+        # ──────────────────────────────────────────────────────────
+        # ── Aragami Followup 1 (any button after 50) ──
+        82: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 100,
+            "hits": [
+                {"damage": 50, "hitstun": 300, "causes_knockdown": False,
+                 "launch_velocity": (1, -5), "juggle_add": 20, "eligible_if": "any"},
+            ],
+        },
+        # ── Aragami Followup 2, Overhead (HCF+P after 82) ──
+        83: {
+            "property": "high",
+            "max_hits": 1,
+            "juggle_potential": 100,
+            "hits": [
+                {"damage": 40, "hitstun": 350, "causes_knockdown": False,
+                 "launch_velocity": (1, -5), "juggle_add": 20, "eligible_if": "any"},
+            ],
+        },
+        # ── Aragami Followup 2, Kick variant (any kick after 82) ──
+        84: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 130,
+            "hits": [
+                {"damage": 60, "hitstun": 350, "causes_knockdown": True,
+                 "launch_velocity": (3, -20), "juggle_add": 40, "eligible_if": "any"},
+            ],
+        },
+        # ── Aragami Followup 2, Punch variant (any punch after 82) ──
+        85: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 130,
+            "hits": [
+                {"damage": 60, "hitstun": 350, "causes_knockdown": True,
+                 "launch_velocity": (3, -20), "juggle_add": 40, "eligible_if": "any"},
+            ],
+        },
+        # ── Aragami Overhead OTG Followup (any punch after 83) ──
+        86: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 0,
+            "hits": [
+                {"damage": 70, "hitstun": 400, "causes_knockdown": True,
+                 "launch_velocity": (1, -5), "juggle_add": 0, "eligible_if": "any"},
+            ],
+        },
+        # ── Dokugami Followup 1 (any punch after 51) ──
+        87: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 130,
+            "hits": [
+                {"damage": 60, "hitstun": 350, "causes_knockdown": False,
+                 "launch_velocity": (1, -5), "juggle_add": 20, "eligible_if": "any"},
+            ],
+        },
+        # ── Dokugami Followup 2 (any punch after 87) ──
+        88: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 130,
+            "hits": [
+                {"damage": 80, "hitstun": 400, "causes_knockdown": True,
+                 "launch_velocity": (3, -20), "juggle_add": 40, "eligible_if": "any"},
+            ],
+        },
+        # ── Kai Followup (any kick after 56/57) ──
+        89: {
+            "property": "mid",
+            "max_hits": 1,
+            "juggle_potential": 130,
+            "hits": [
+                {"damage": 70, "hitstun": 400, "causes_knockdown": True,
+                 "launch_velocity": (3, -20), "juggle_add": 40, "eligible_if": "any"},
+            ],
+        },
     },
 
     "hitbox_data": {
@@ -377,74 +539,77 @@ KYO = {
     },
 
     "hurtbox_data": {
+
         0: { 
-            0: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            1: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            2: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            3: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            4: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            5: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            6: [(-37, 52, 42, 40), (-59, 64, 103, 196)]
+            0: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            1: [(-39, 76, 82, 187), (-23, 50, 34, 37)],  
+            2: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            3: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            4: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            5: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            6: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            7: [(-39, 76, 82, 187), (-23, 50, 34, 37)]
         },
         1:{
-            0: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            1: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            2: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            3: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            4: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            5: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            6: [(-37, 52, 42, 40), (-59, 64, 103, 196)],
-            7: [(-37, 52, 42, 40), (-59, 64, 103, 196)]
+            0: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            1: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            2: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            3: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            4: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            5: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            6: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            7: [(-39, 76, 82, 187), (-23, 50, 34, 37)]
         },
         2:{
-            0: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            1: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            2: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            3: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            4: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            5: [(-37, 52, 42, 40), (-59, 64, 103, 196)], 
-            6: [(-37, 52, 42, 40), (-59, 64, 103, 196)],
-            7: [(-37, 52, 42, 40), (-59, 64, 103, 196)]
+            0: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            1: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            2: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            3: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            4: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            5: [(-39, 76, 82, 187), (-23, 50, 34, 37)], 
+            6: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            7: [(-39, 76, 82, 187), (-23, 50, 34, 37)]
         },
         3:{
-            0: [(-64, 53, 124, 137)], 
-            1: [(-64, 53, 124, 137)], 
-            2: [(-64, 53, 124, 137)], 
-            3: [(-64, 53, 124, 137)], 
-            4: [(-43, 34, 87, 211)], 
+            0: [(-84, 39, 128, 191)], 
+            1: [(-60, 37, 145, 143)], 
+            2: [(-40, 5, 114, 156)], 
+            3: [(-54, 18, 137, 122)], 
+            4: [(-5, 23, 102, 93), (-68, 90, 85, 124)], 
             5: [(-43, 34, 87, 211)], 
             6: [(-43, 34, 87, 211)],
             7: [(-54, 51, 100, 177)]  
         },
         4:{
-            0: [(-64, 53, 124, 137)], 
-            1: [(-64, 53, 124, 137)], 
-            2: [(-64, 53, 124, 137)], 
-            3: [(-64, 53, 124, 137)], 
-            4: [(-43, 34, 87, 211)], 
-            5: [(-43, 34, 87, 211)], 
-            6: [(-43, 34, 87, 211)],
-            7: [(-54, 51, 100, 177)]  
+            0: [(-43, 76, 91, 178)], 
+            1: [(-18, 9, 70, 248)], 
+            2: [(-18, 9, 70, 248)], 
+            3: [(-51, 28, 86, 182)], 
+            4: [(-80, 31, 131, 177)], 
+            5: [(-80, 37, 123, 154)], 
+            6: [(-78, 33, 127, 152)] 
         },
         5:{
-            0: [(-64, 123, 113, 139)], 
-            1: [(-64, 123, 113, 139)],
-            2: [(-64, 123, 113, 139)],
+            0: [(-51, 61, 104, 195)], 
+            1: [(-61, 108, 118, 153)],
+            2: [(-61, 108, 118, 153)],
         },
         6: {
-            0: [(0, 0, 0, 0)],
-            1: [(0, 0, 0, 0)],
-            2: [(0, 0, 0, 0)],
-            3: [(0, 0, 0, 0)],
-            4: [(0, 0, 0, 0)],
+            0: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            1: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            2: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            3: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            4: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            5: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            6: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
         },
         7: {
-            0: [(0, 0, 0, 0)],
-            1: [(0, 0, 0, 0)],
-            2: [(0, 0, 0, 0)],
-            3: [(0, 0, 0, 0)],
-            4: [(0, 0, 0, 0)],
-            5: [(0, 0, 0, 0)],
+            0: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            1: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            2: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            3: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            4: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
+            5: [(-39, 76, 82, 187), (-23, 50, 34, 37)],
         },
         10: {
             0: [(-47, 54, 39, 37), (-77, 62, 105, 197)],
